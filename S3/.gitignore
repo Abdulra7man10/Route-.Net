@@ -1,0 +1,8 @@
+﻿# Visual Studio specific
+.vs/
+*.suo
+*.user
+
+# Build results
+[Bb]in/
+[Oo]bj/
