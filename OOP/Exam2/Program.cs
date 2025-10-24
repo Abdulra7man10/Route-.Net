@@ -98,7 +98,7 @@ namespace Exam2
             Console.WriteLine($"Your total score is: {userScore} out of {totalScore}");
             #endregion*/
 
-            #region TestExams
+            #region Subject with Exams
             Subject Programming = new Subject("CS101", "Programming");
 
             #region TestPraticalExam
@@ -249,7 +249,7 @@ namespace Exam2
 
             Programming.PracticlE = praticalExam;
 
-            /*Console.WriteLine($"Pratical Exam of Programming Subject");
+            Console.WriteLine($"Pratical Exam of Programming Subject");
             Console.WriteLine("===============================\n");
 
             int userInput;
@@ -264,7 +264,7 @@ namespace Exam2
                 Console.WriteLine("--------------------------\n");
             }
 
-            Programming.PracticlE.DisplayAfterExam();*/
+            Programming.PracticlE.DisplayAfterExam();
 
             #endregion
 
@@ -439,7 +439,7 @@ namespace Exam2
             Console.WriteLine($"Final Exam of Programming Subject");
             Console.WriteLine("===============================\n");
 
-            int userInput;
+            //int userInput;
             foreach (var question in Programming.FinalE.Questions)
             {
                 Console.WriteLine(question.ToString());
@@ -452,7 +452,11 @@ namespace Exam2
             }
 
             Programming.FinalE.DisplayAfterExam();
+
+            Console.WriteLine("================================");
             #endregion
+
+            Programming.HigherExam();
 
             #endregion
         }

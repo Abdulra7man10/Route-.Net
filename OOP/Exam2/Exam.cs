@@ -48,6 +48,14 @@ namespace Exam2
             }
         }
 
+        public double UserTotalPer
+        {
+            get
+            {
+                return (UserTotalMarks * 100) / TotalMarks;
+            }
+        }
+
         public override string ToString()
         {
             string result = $"Exam: {GetType()}\nNumber of Questions: {NumberofQuestions}\n" +
@@ -57,6 +65,36 @@ namespace Exam2
                 result += question.ToString() + "\n";
 
             return result;
+        }
+
+        public static bool operator >(Exam examA, Exam examB)
+        {
+            if (examA is null) return false;
+            if (examB is null) return true;
+
+            return examA.UserTotalPer > examB.UserTotalPer;
+        }
+
+        public static bool operator <(Exam examA, Exam examB)
+        {
+            if (examA is null) return true;
+            if (examB is null) return false;
+
+            return examA.UserTotalPer < examB.UserTotalPer;
+        }
+
+        public static bool operator ==(Exam examA, Exam examB)
+        {
+            if (examA is null || examB is null) return false;
+
+            return examA.UserTotalPer == examB.UserTotalPer;
+        }
+
+        public static bool operator !=(Exam examA, Exam examB)
+        {
+            if (examA is null || examB is null) return false;
+
+            return examA.UserTotalPer != examB.UserTotalPer;
         }
 
         public abstract void DisplayAfterExam();
