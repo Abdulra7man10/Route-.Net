@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Payment/Payment.csproj" Id="31eba532-f897-4496-b846-5a72a4cd4277" />
+  <Project Path="Product/Product.csproj" Id="9bcbbd08-5b17-4800-bf54-33b1aee07a6b" />
+  <Project Path="S4/S4.csproj" />
+  <Project Path="SectionC_Inh/Vehicle.csproj" Id="13f67510-d155-44bc-af47-b3fac5a9a1b4" />
+</Solution>
