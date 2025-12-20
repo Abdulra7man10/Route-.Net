@@ -9,18 +9,23 @@ using System.Threading.Tasks;
 
 namespace GymManagmentDAL.Repostories.Classes
 {
-    public class CategoryRepository : ICategoryRepository
+    public class CategoryRepository : GenericRepostory<Category>
     {
-        private readonly GymDBContext _context = new GymDBContext();
-        public IEnumerable<Category> GetAll() => _context.Categories.ToList();
-        public Category? GetById(int id) => _context.Categories.Find(id);
-        public int Add(Category entity) { _context.Categories.Add(entity); return _context.SaveChanges(); }
-        public int Update(Category entity) { _context.Categories.Update(entity); return _context.SaveChanges(); }
-        public int Delete(int id)
+        private readonly GymDBContext _context;
+        public CategoryRepository(GymDBContext context) : base(context)
         {
-            var item = _context.Categories.Find(id);
-            if (item != null) { _context.Categories.Remove(item); return _context.SaveChanges(); }
-            return 0;
+            _context = context;
         }
+
+        //public IEnumerable<Category> GetAll() => _context.Categories.ToList();
+        //public Category? GetById(int id) => _context.Categories.Find(id);
+        //public int Add(Category entity) { _context.Categories.Add(entity); return _context.SaveChanges(); }
+        //public int Update(Category entity) { _context.Categories.Update(entity); return _context.SaveChanges(); }
+        //public int Delete(int id) // function now is TEntity entity
+        //{
+        //    var item = _context.Categories.Find(id);
+        //    if (item != null) { _context.Categories.Remove(item); return _context.SaveChanges(); }
+        //    return 0;
+        //}
     }
 }

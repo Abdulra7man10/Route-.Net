@@ -7,12 +7,7 @@ using System.Threading.Tasks;
 
 namespace GymManagmentDAL.Repostories.Interfaces
 {
-    public interface IHealthRecordRepository
+    public interface IHealthRecordRepository : IGenericRepostory<HealthRecord>
     {
-        IEnumerable<HealthRecord> GetAll();
-        HealthRecord? GetById(int id);
-        int Add(HealthRecord entity);
-        int Update(HealthRecord entity);
-        int Delete(int id);
     }
 }

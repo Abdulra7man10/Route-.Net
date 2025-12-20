@@ -7,12 +7,7 @@ using System.Threading.Tasks;
 
 namespace GymManagmentDAL.Repostories.Interfaces
 {
-    public interface ICategoryRepository
+    public interface ICategoryRepository: IGenericRepostory<Category>
     {
-        IEnumerable<Category> GetAll();
-        Category? GetById(int id);
-        int Add(Category entity);
-        int Update(Category entity);
-        int Delete(int id);
     }
 }

@@ -9,12 +9,17 @@ using GymManagmentDAL.Entities;
 
 namespace GymManagmentDAL.Data.Context
 {
-    internal class GymDBContext : DbContext
+    public class GymDBContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public GymDBContext(DbContextOptions<GymDBContext> option): base(option) // to specify where to read connection string
         {
-            optionsBuilder.UseSqlServer("Server=Abdulrahman\\MSSQLS;Database=GymManagmentDB;Trusted_Connection=True;TrustServerCertificate=True;");
+
         }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("Server=Abdulrahman\\MSSQLS;Database=GymManagmentDB;Trusted_Connection=True;TrustServerCertificate=True;");
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

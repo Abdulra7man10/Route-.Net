@@ -7,19 +7,7 @@ using GymManagmentDAL.Entities;
 
 namespace GymManagmentDAL.Repostories.Interfaces
 {
-    public interface ITrainerRepostory
+    public interface ITrainerRepostory : IGenericRepostory<Trainer>
     {
-        // GetAll
-        IEnumerable<Trainer> GetAll();
-
-        // GetById
-        Trainer? GetById(int id);
-
-        // Add
-        int Add(Trainer member);
-        // Update
-        int Update(Trainer member);
-        // Delete
-        int Delete(int id);
     }
 }

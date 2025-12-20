@@ -7,19 +7,19 @@ using GymManagmentDAL.Entities;
 
 namespace GymManagmentDAL.Repostories.Interfaces
 {
-    public interface ISessionRepostory
+    public interface ISessionRepostory : IGenericRepostory<Session>
     {
-        // GetAll
-        IEnumerable<Session> GetAll();
+        //// GetAll
+        //IEnumerable<Session> GetAll();
 
-        // GetById
-        Session? GetById(int id);
+        //// GetById
+        //Session? GetById(int id);
 
-        // Add
-        int Add(Session member);
-        // Update
-        int Update(Session member);
-        // Delete
-        int Delete(int id);
+        //// Add
+        //int Add(Session member);
+        //// Update
+        //int Update(Session member);
+        //// Delete
+        //int Delete(int id);
     }
 }

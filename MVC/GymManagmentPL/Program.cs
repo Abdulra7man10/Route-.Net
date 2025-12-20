@@ -1,3 +1,9 @@
+using GymManagmentDAL.Data.Context;
+using Microsoft.EntityFrameworkCore;
+using GymManagmentDAL.Repostories.Classes;
+using GymManagmentDAL.Repostories.Interfaces;
+using GymManagmentDAL.Entities;
+
 namespace GymManagmentPL
 {
     public class Program
@@ -6,16 +12,22 @@ namespace GymManagmentPL
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddDbContext<GymDBContext>(option => {
+                //option.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings")["DefaultConnection"]); // 1
+                //option.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]); // 2
+                option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")); // 3 (easiest way)
+            });
+            builder.Services.AddScoped(typeof(IGenericRepostory<>), typeof(GenericRepostory<>)); // typeof because of generic class
+            builder.Services.AddScoped<IPlanRepostory, PlanRepository>();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+
+
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
