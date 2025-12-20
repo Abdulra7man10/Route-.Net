@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Product.Models;
+using ProductA.Models;
 
-namespace Product
+namespace ProductA
 {
     public class ProductContext : DbContext
     {
@@ -12,6 +12,14 @@ namespace Product
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=ABDULRAHMAN\\MSSQLS;Database=ProductInheritanceDb;Trusted_Connection=True;MultipleActiveResultSets=true;trustServerCertificate=True");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Product>()
+                .UseTpcMappingStrategy();
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

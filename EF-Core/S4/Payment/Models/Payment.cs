@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace Payment.Models
+namespace PaymentA.Models
 {
-    [Table("Payments")]
     public class Payment
     {
         public int Id { get; set; }

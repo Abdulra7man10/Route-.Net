@@ -1,6 +1,6 @@
-﻿using Product.Models;
+﻿using ProductA.Models;
 
-namespace Product
+namespace ProductA
 {
     internal class Program
     {

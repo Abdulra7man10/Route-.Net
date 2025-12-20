@@ -1,6 +1,6 @@
-﻿using Payment.Models;
+﻿using PaymentA.Models;
 
-namespace Payment
+namespace PaymentA
 {
     internal class Program
     {

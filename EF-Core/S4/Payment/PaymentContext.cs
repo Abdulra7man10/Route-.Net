@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Payment.Models;
+using PaymentA.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Payment
+namespace PaymentA
 {
     public class PaymentContext : DbContext
     {
@@ -19,6 +19,7 @@ namespace Payment
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Payment>().ToTable("Payments");
             modelBuilder.Entity<CreditCardPayment>().ToTable("CreditCardPayments");
             modelBuilder.Entity<CashPayment>().ToTable("CashPayments");
 
