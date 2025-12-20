@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using GymManagmentDAL.Repostories.Classes;
 using GymManagmentDAL.Repostories.Interfaces;
 using GymManagmentDAL.Entities;
+using GymManagmentDAL.Data.DataSeeding;
 
 namespace GymManagmentPL
 {
@@ -18,10 +19,25 @@ namespace GymManagmentPL
                 //option.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]); // 2
                 option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")); // 3 (easiest way)
             });
-            builder.Services.AddScoped(typeof(IGenericRepostory<>), typeof(GenericRepostory<>)); // typeof because of generic class
-            builder.Services.AddScoped<IPlanRepostory, PlanRepository>();
+            //builder.Services.AddScoped(typeof(IGenericRepostory<>), typeof(GenericRepostory<>)); // typeof because of generic class
+            //builder.Services.AddScoped<IPlanRepostory, PlanRepository>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 
             var app = builder.Build();
+
+            #region DataSeeding
+            using var scope = app.Services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<GymDBContext>();
+
+            var pendingMigrations = dbContext.Database.GetPendingMigrations();
+            if (pendingMigrations?.Any() ?? false)
+            {
+                dbContext.Database.Migrate();
+            }
+
+            GymDbContextSeeding.SeedData(dbContext, app.Environment.ContentRootPath);
+            #endregion
 
 
 

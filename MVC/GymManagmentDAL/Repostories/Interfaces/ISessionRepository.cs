@@ -7,7 +7,9 @@ using GymManagmentDAL.Entities;
 
 namespace GymManagmentDAL.Repostories.Interfaces
 {
-    public interface IMemberRepostory : IGenericRepostory<Member>
+    public interface ISessionRepository : IGenericRepostory<Session>
     {
+        IEnumerable<Session> GetAllSessionWithTrainerAndCategory();
+        int GetCountOfBookedSlot(int sessionId);
     }
 }

@@ -17,17 +17,10 @@ namespace GymManagmentDAL.Repostories.Classes
         {
             _context = context;
         }
-        public int Add(TEntity entity)
-        {
-            _context.Set<TEntity>().Add(entity);
-            return _context.SaveChanges();
-        }
+        public void Add(TEntity entity) => _context.Set<TEntity>().Add(entity);
+        public void Update(TEntity entity) => _context.Set<TEntity>().Update(entity);
 
-        public int Delete(TEntity entity)
-        {
-            _context.Set<TEntity>().Remove(entity);
-            return _context.SaveChanges();
-        }
+        public void Delete(TEntity entity) => _context.Set<TEntity>().Remove(entity);
 
         public IEnumerable<TEntity> GetAll(Func<TEntity, bool>? condition = null)
         {
@@ -38,10 +31,5 @@ namespace GymManagmentDAL.Repostories.Classes
 
         public TEntity? GetById(int id) => _context.Set<TEntity>().Find(id);
 
-        public int Update(TEntity entity)
-        {
-            _context.Set<TEntity>().Update(entity);
-            return _context.SaveChanges();
-        }
     }
 }
