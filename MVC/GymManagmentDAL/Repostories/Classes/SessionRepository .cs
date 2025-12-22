@@ -31,5 +31,13 @@ namespace GymManagmentDAL.Repostories.Classes
                 .Where(x => x.SessionId == sessionId)
                 .Count();
         }
+
+        public Session? GetSessionWithTrainerAndCategory(int sessionId)
+        {
+            return _context.Sessions
+                .Include (s => s.SessionTrainer)
+                .Include(s => s.SessionCategory)
+                .FirstOrDefault(x => x.Id == sessionId);
+        }
     }
 }

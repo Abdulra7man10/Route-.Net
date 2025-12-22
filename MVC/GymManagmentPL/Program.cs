@@ -4,6 +4,7 @@ using GymManagmentDAL.Repostories.Classes;
 using GymManagmentDAL.Repostories.Interfaces;
 using GymManagmentDAL.Entities;
 using GymManagmentDAL.Data.DataSeeding;
+using GymManagmentBLL.Service;
 
 namespace GymManagmentPL
 {
@@ -23,6 +24,7 @@ namespace GymManagmentPL
             //builder.Services.AddScoped<IPlanRepostory, PlanRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+            builder.Services.AddAutoMapper(x => x.AddProfile(new MappingProfile()));
 
             var app = builder.Build();
 

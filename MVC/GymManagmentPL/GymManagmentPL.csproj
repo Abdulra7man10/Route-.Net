@@ -4,6 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>d1e8789f-3d01-4562-868e-a8d17e514c74</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GymManagmentBLL\GymManagmentBLL.csproj" />
     <ProjectReference Include="..\GymManagmentDAL\GymManagmentDAL.csproj" />
   </ItemGroup>
 
