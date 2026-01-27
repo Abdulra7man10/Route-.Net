@@ -144,6 +144,18 @@ namespace GymManagmentBLL.Service.Classes
             }
         }
 
+        public IEnumerable<TrainerSelectViewModel> GetTrainerForDropDown()
+        {
+            var trainer = _unitOfWork.GetRepository<Trainer>().GetAll();
+            return _mapper.Map<IEnumerable<TrainerSelectViewModel>>(trainer);
+        }
+
+        public IEnumerable<CategorySelectViewModel> GetCategoryForDropDown()
+        {
+            var category = _unitOfWork.GetRepository<Category>().GetAll();
+            return _mapper.Map<IEnumerable<CategorySelectViewModel>>(category);
+        }
+
         #region helpers
         private bool IsTrainerExist(int TrainerId) 
         {

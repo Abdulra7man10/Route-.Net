@@ -1,4 +1,5 @@
-﻿using GymManagmentBLL.Service.Interfaces;
+﻿using AutoMapper.Execution;
+using GymManagmentBLL.Service.Interfaces;
 using GymManagmentBLL.ViewModels.MemberViewModel;
 using GymManagmentDAL.Entities;
 using GymManagmentDAL.Repostories.Interfaces;
@@ -20,7 +21,7 @@ namespace GymManagmentBLL.Service.Classes
 
         public IEnumerable<MemberViewModels> GetAllMembers()
         {
-            var Members = _unitOfWork.GetRepository<Member>().GetAll();
+            var Members = _unitOfWork.GetRepository<GymManagmentDAL.Entities.Member>().GetAll();
 
             if (Members is null || !Members.Any())
                 return [];
@@ -62,7 +63,7 @@ namespace GymManagmentBLL.Service.Classes
                 if (IsEmailExist(createMemberViewModel.Email) || IsPhoneExist(createMemberViewModel.Phone))
                     return false;
 
-                var member = new Member
+                var member = new GymManagmentDAL.Entities.Member
                 {
                     Name = createMemberViewModel.Name,
                     Email = createMemberViewModel.Email,
@@ -84,7 +85,7 @@ namespace GymManagmentBLL.Service.Classes
                     }
                 };
 
-                _unitOfWork.GetRepository<Member>().Add(member);
+                _unitOfWork.GetRepository<GymManagmentDAL.Entities.Member>().Add(member);
                 return _unitOfWork.SaveChange() > 0;
             }
             catch
@@ -95,7 +96,7 @@ namespace GymManagmentBLL.Service.Classes
 
         public MemberViewModels? GetMemberDetails(int id)
         {
-            var member = _unitOfWork.GetRepository<Member>().GetById(id);
+            var member = _unitOfWork.GetRepository<GymManagmentDAL.Entities.Member>().GetById(id);
             if (member is null)
                 return null;
 
@@ -142,7 +143,7 @@ namespace GymManagmentBLL.Service.Classes
 
         public MemberToUpdateViewModel? GetMemberToUpdate(int MemberId)
         {
-            var Member = _unitOfWork.GetRepository<Member>().GetById(MemberId);
+            var Member = _unitOfWork.GetRepository<GymManagmentDAL.Entities.Member>().GetById(MemberId);
             if (Member is null)
                 return null;
 
@@ -162,10 +163,12 @@ namespace GymManagmentBLL.Service.Classes
         {
             try
             {
-                if (IsEmailExist(memberToUpdate.Email) || IsPhoneExist(memberToUpdate.Phone))
+                var phoneexist = _unitOfWork.GetRepository<GymManagmentDAL.Entities.Member>().GetAll(x => x.Phone == memberToUpdate.Phone && x.Id != MemberId);
+                var emailexist = _unitOfWork.GetRepository<GymManagmentDAL.Entities.Member>().GetAll(x => x.Email == memberToUpdate.Email && x.Id != MemberId);
+                if (emailexist.Any() || phoneexist.Any())
                     return false;
 
-                var memberRepo = _unitOfWork.GetRepository<Member>();
+                var memberRepo = _unitOfWork.GetRepository<GymManagmentDAL.Entities.Member>();
                 var member = memberRepo.GetById(MemberId);
                 if (member is null)
                     return false;
@@ -188,7 +191,7 @@ namespace GymManagmentBLL.Service.Classes
 
         public bool RemoveMember(int MemberId)
         {
-            var memberRepo = _unitOfWork.GetRepository<Member>();
+            var memberRepo = _unitOfWork.GetRepository<GymManagmentDAL.Entities.Member>();
 
             var member = memberRepo.GetById(MemberId);
             if (member is null)
@@ -219,12 +222,12 @@ namespace GymManagmentBLL.Service.Classes
         #region Helper methods
         private bool IsEmailExist(string email)
         {
-            return _unitOfWork.GetRepository<Member>().GetAll(x => x.Email == email).Any();
+            return _unitOfWork.GetRepository<GymManagmentDAL.Entities.Member>().GetAll(x => x.Email == email).Any();
         }
 
         private bool IsPhoneExist(string phone)
         {
-            return _unitOfWork.GetRepository<Member>().GetAll(x => x.Phone == phone).Any();
+            return _unitOfWork.GetRepository<GymManagmentDAL.Entities.Member>().GetAll(x => x.Phone == phone).Any();
         }
         #endregion
     }
