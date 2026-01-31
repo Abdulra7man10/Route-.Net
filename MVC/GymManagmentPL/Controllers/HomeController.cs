@@ -1,5 +1,6 @@
 ﻿using GymManagmentBLL.Services.Interfaces;
 using GymManagmentDAL.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymManagmentPL.Controllers

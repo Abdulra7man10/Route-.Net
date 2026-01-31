@@ -1,5 +1,7 @@
-﻿using AutoMapper.Execution;
+﻿using AutoMapper;
+using AutoMapper.Execution;
 using GymManagmentBLL.Service.Interfaces;
+using GymManagmentBLL.Service.Interfaces.AttachmentService;
 using GymManagmentBLL.ViewModels.MemberViewModel;
 using GymManagmentDAL.Entities;
 using GymManagmentDAL.Repostories.Interfaces;
@@ -14,84 +16,74 @@ namespace GymManagmentBLL.Service.Classes
     public class MemberService : IMemberService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public MemberService(IUnitOfWork unitOfWork)
+        private readonly IAttachmentService _attachmentService;
+        private readonly IMapper _mapper;
+
+        public MemberService(IUnitOfWork unitOfWork,
+            IAttachmentService attachmentService,
+            IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _attachmentService = attachmentService;
+            _mapper = mapper;
         }
 
         public IEnumerable<MemberViewModels> GetAllMembers()
         {
             var Members = _unitOfWork.GetRepository<GymManagmentDAL.Entities.Member>().GetAll();
+            if (Members is null || !Members.Any()) return [];
+            #region Way01
+            //var MemberViewmodel=new List<MemberViewModels>();
+            //foreach (var Member in Members)
+            //{
+            //	var memberviewmodel = new MemberViewModels()
+            //	{
+            //		Id = Member.Id,
+            //		Name = Member.Name,
+            //		Email = Member.Email,
+            //		Phone = Member.Phone,
+            //		phote = Member.phote,
+            //		Gender = Member.Gender.ToString()
 
-            if (Members is null || !Members.Any())
-                return [];
-
-            var MemberViewModel = new List<MemberViewModels>();
-
-            // Those 2 ways are Manaul Mapping, other method is using AutoMapper Library
-            // Way using foreach
-            foreach (var member in Members)
-            {
-                MemberViewModel.Add(new MemberViewModels // Mapping, took from Member what MemberViewModel need
-                {
-                    Id = member.Id,
-                    Name = member.Name,
-                    Email = member.Email,
-                    Phone = member.Phone,
-                    Gender = member.Gender.ToString()
-                });
-            }
-
-            /* Way using LINQ
-            var MemberViewModelS = Members.Select(member => new MemberViewModels
-            {
-                Id = member.Id,
-                Name = member.Name,
-                Email = member.Email,
-                Phone = member.Phone,
-                Gender = member.Gender.ToString()
-            });
-            */
-
-            return MemberViewModel;
+            //	};
+            //	MemberViewmodel.Add(memberviewmodel);
+            //} 
+            #endregion
+            var MemberViewmodel = _mapper.Map<IEnumerable<MemberViewModels>>(Members);
+            return MemberViewmodel;
         }
 
-        public bool CreateMember(CreateMemberViewModel createMemberViewModel)
+        public bool CreateMember(CreateMemberViewModel createMember)
         {
             try
             {
-                if (IsEmailExist(createMemberViewModel.Email) || IsPhoneExist(createMemberViewModel.Phone))
+                if (IsEmailExist(createMember.Email) || IsPhoneExist(createMember.Phone))
                     return false;
 
-                var member = new GymManagmentDAL.Entities.Member
-                {
-                    Name = createMemberViewModel.Name,
-                    Email = createMemberViewModel.Email,
-                    Phone = createMemberViewModel.Phone,
-                    Gender = createMemberViewModel.Gender,
-                    DateOfBirth = createMemberViewModel.DateOfBirth,
-                    Address = new Address
-                    {
-                        BuildingNumber = createMemberViewModel.BuildingNumber,
-                        Street = createMemberViewModel.Street,
-                        City = createMemberViewModel.City
-                    },
-                    HealthRecord = new HealthRecord
-                    {
-                        Height = createMemberViewModel.HealthRecord.Height,
-                        Weight = createMemberViewModel.HealthRecord.Weight,
-                        BloodType = createMemberViewModel.HealthRecord.BloodType,
-                        Note = createMemberViewModel.HealthRecord.Note
-                    }
-                };
+                var photoName = _attachmentService.Upload("members", createMember.PhotoFile);
+                if (string.IsNullOrEmpty(photoName)) return false;
+                var member = _mapper.Map<GymManagmentDAL.Entities.Member>(createMember);
+                member.Photo = photoName;
 
                 _unitOfWork.GetRepository<GymManagmentDAL.Entities.Member>().Add(member);
-                return _unitOfWork.SaveChange() > 0;
+                var Iscreated = _unitOfWork.SaveChange() > 0;
+                if (!Iscreated)
+                {
+                    _attachmentService.Delete(photoName, "members");
+                    return false;
+
+                }
+                else
+                    return Iscreated;
+
+
             }
-            catch
+            catch (Exception)
             {
+
                 return false;
             }
+
         }
 
         public MemberViewModels? GetMemberDetails(int id)
@@ -211,7 +203,13 @@ namespace GymManagmentBLL.Service.Classes
                         membershipRepo.Delete(m);
 
                 memberRepo.Delete(member);
-                return _unitOfWork.SaveChange() > 0;
+                var IsDeleted = _unitOfWork.SaveChange() > 0;
+                if (IsDeleted)
+                {
+                    _attachmentService.Delete(member.Photo, "members");
+                }
+                return IsDeleted;
+            
             } 
             catch 
             {

@@ -6,10 +6,11 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using GymManagmentDAL.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace GymManagmentDAL.Data.Context
 {
-    public class GymDBContext : DbContext
+    public class GymDBContext : IdentityDbContext<ApplicationUser>
     {
         public GymDBContext(DbContextOptions<GymDBContext> option): base(option) // to specify where to read connection string
         {
@@ -23,7 +24,14 @@ namespace GymManagmentDAL.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            modelBuilder.Entity<ApplicationUser>(e =>
+            {
+                e.Property(x => x.FirstName).HasColumnType("varchar").HasMaxLength(50);
+                e.Property(x => x.LastName).HasColumnType("varchar").HasMaxLength(50);
+            });
         }
 
         #region DBSets
