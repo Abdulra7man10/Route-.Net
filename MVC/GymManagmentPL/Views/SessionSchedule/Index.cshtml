@@ -1,0 +1,83 @@
+﻿@model IEnumerable<GymManagmentBLL.ViewModels.SessionScheduleViewModel.SessionScheduleViewModel>
+
+<div class="container mt-5">
+    <header class="d-flex justify-content-between mb-4 align-items-center">
+        <h3 class="text-primary fw-bold">Session Schedule</h3>
+        <a asp-action="Book" class="btn btn-fill fw-medium rounded-pill px-4">
+            + Book Session
+        </a>
+    </header>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive" style="overflow: visible;">
+            <table class="table table-borderless align-middle">
+                <thead>
+                    <tr>
+                        <th>Member</th>
+                        <th>Session Title</th>
+                        <th>Trainer</th>
+                        <th>Start Time</th>
+                        <th>Attendance</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold">@item.MemberName</td>
+                            <td><span class="badge bg-light text-dark border">@item.SessionDescription</span></td>
+                            <td>@item.TrainerName</td>
+                            <td>@item.StartTime</td>
+                            <td>
+                                @if (item.IsAttended)
+                                {
+                                    <span class="badge bg-success">Attended</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <button class="btn btn-link p-0 border-0" type="button" data-bs-toggle="dropdown">
+                                        <img src="~/images/action dots.jpg" alt="action icon" />
+                                    </button>
+                                    <ul class="dropdown-menu shadow border-0">
+                                        <li>
+                                            <form asp-action="Cancel" asp-route-id="@item.Id" method="post" id="cancelForm-@item.Id">
+                                                <button type="button" class="dropdown-item text-danger d-flex align-items-center gap-2"
+                                                        onclick="if(confirm('Cancel this booking?')) { document.getElementById('cancelForm-@item.Id').submit(); }">
+                                                    <i class="bi bi-trash"></i> Cancel Booking
+                                                </button>
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <form asp-action="ToggleAttendance" asp-route-id="@item.Id" method="post" id="attendanceForm-@item.Id">
+                                                <button type="button" class="dropdown-item d-flex align-items-center gap-2"
+                                                        onclick="document.getElementById('attendanceForm-@item.Id').submit();">
+                                                    @if (item.IsAttended)
+                                                    {
+                                                        <i class="bi bi-x-square text-warning"></i>
+                                                        <span>Mark as Absent</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="bi bi-check-square text-success"></i>
+                                                        <span>Mark as Attended</span>
+                                                    }
+                                                </button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

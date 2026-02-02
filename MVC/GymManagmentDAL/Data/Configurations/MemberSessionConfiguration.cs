@@ -14,9 +14,9 @@ namespace GymManagmentDAL.Data.Configurations
         public void Configure(EntityTypeBuilder<MemberSession> builder)
         {
             builder.Property(x => x.CreatedAt).HasColumnName("BookingDate").HasDefaultValueSql("GETDATE()");
-
-            builder.HasKey(x => new { x.MemberId, x.SessionId });
-            builder.Ignore(x => x.Id);
+            builder.HasKey(x => x.Id);
+            //builder.HasKey(x => new { x.MemberId, x.SessionId });
+            //builder.Ignore(x => x.Id);
         }
     }
 }

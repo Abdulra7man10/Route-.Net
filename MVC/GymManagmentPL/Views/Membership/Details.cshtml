@@ -1,0 +1,67 @@
+﻿@model GymManagmentBLL.ViewModels.MembershipViewModel.MembershipViewModel
+
+@{
+    ViewData["Title"] = "Subscription Details";
+}
+
+<div class="container mt-5">
+    <div class="header-section d-flex justify-content-between align-items-center mb-4">
+        <h3 class="text-primary fw-bold">Subscription Details</h3>
+        <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm p-4 h-100">
+                <h5 class="text-muted small fw-bold mb-4">PLAN INFORMATION</h5>
+
+                <div class="row mb-4">
+                    <div class="col-6">
+                        <label class="text-muted d-block small">Plan Name</label>
+                        <span class="fs-5 fw-bold">@Model.PlanName</span>
+                    </div>
+                    <div class="col-6">
+                        <label class="text-muted d-block small">Status</label>
+                        @if (Model.Status == "Active")
+                        {
+                            <span class="badge bg-success-subtle text-success px-3">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary-subtle text-secondary px-3">@Model.Status</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <label class="text-muted d-block small">Start Date</label>
+                        <span class="fw-medium">@Model.StartDate</span>
+                    </div>
+                    <div class="col-6">
+                        <label class="text-muted d-block small">Expiry Date</label>
+                        <span class="fw-medium text-danger">@Model.EndDate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-4 text-center">
+                <h5 class="text-muted small fw-bold mb-4 text-start">MEMBER</h5>
+                <div class="mb-3">
+                    <img src="~/images/user.png" class="rounded-circle shadow-sm" style="width: 80px; height: 80px;" alt="Member" />
+                </div>
+                <h5 class="fw-bold mb-1">@Model.MemberName</span></h5>
+                @* <p class="text-muted small">ID: #@Model.Id</p>
+
+                <a asp-controller="Member" asp-action="MemberDetails" asp-route-id="@Model.Id"
+                   class="btn btn-primary w-100 mt-3 rounded-pill">
+                    View Member Profile
+                </a> *@
+            </div>
+        </div>
+    </div>
+</div>

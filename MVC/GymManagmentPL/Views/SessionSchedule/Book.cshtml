@@ -1,0 +1,30 @@
+﻿@model GymManagmentBLL.ViewModels.SessionScheduleViewModel.CreateSessionScheduleViewModel
+
+<div class="container mt-5">
+    <div class="card border-0 shadow-sm p-4 mx-auto" style="max-width: 500px;">
+        <h4 class="text-primary fw-bold mb-4">Book a Session</h4>
+
+        <form asp-action="Book" method="post">
+            <div class="mb-3">
+                <label asp-for="MemberId" class="form-label small fw-bold text-muted">MEMBER</label>
+                <select asp-for="MemberId" class="form-select py-2" asp-items="ViewBag.Members">
+                    <option value="">-- Select Member --</option>
+                </select>
+                <span asp-validation-for="MemberId" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="SessionId" class="form-label small fw-bold text-muted">SESSION</label>
+                <select asp-for="SessionId" class="form-select py-2" asp-items="ViewBag.Sessions">
+                    <option value="">-- Select Available Session --</option>
+                </select>
+                <span asp-validation-for="SessionId" class="text-danger small"></span>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+                <a asp-action="Index" class="btn btn-light px-4 rounded-pill">Cancel</a>
+                <button type="submit" class="btn btn-primary px-4 rounded-pill">Confirm Booking</button>
+            </div>
+        </form>
+    </div>
+</div>
